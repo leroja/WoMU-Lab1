@@ -1,0 +1,15 @@
+﻿body {
+}
+
+#header-jumbotron{
+    background-color: #0066ff;
+}
+#navbar {
+    margin-left: 50px;
+}
+
+#header-jumbotron h2{
+    margin-left: 40px;
+    color: #fff;
+    margin-top: 50px;
+}
