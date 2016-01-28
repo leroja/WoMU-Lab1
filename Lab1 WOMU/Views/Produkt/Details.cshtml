@@ -1,0 +1,50 @@
+﻿@model Lab1_WOMU.Models.Produkt
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Produkt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProduktNamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProduktNamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProduktBeskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProduktBeskrivning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pris)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pris)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AntalILager)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AntalILager)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProduktID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
