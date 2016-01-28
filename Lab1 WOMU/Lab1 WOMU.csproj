@@ -230,11 +230,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Produkt\Create.cshtml" />
-    <Content Include="Views\Produkt\Delete.cshtml" />
     <Content Include="Views\Produkt\Details.cshtml" />
-    <Content Include="Views\Produkt\Edit.cshtml" />
     <Content Include="Views\Produkt\Index.cshtml" />
+    <Content Include="Views\Produkt\BuyPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
