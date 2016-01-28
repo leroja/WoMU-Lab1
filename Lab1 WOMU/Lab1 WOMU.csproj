@@ -232,6 +232,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Produkt\Details.cshtml" />
     <Content Include="Views\Produkt\Index.cshtml" />
+    <Content Include="Views\Produkt\BuyPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
