@@ -13,5 +13,12 @@ namespace Lab1_WOMU.Controllers
         {
             return View();
         }
+
+
+        // GET: Home
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }
