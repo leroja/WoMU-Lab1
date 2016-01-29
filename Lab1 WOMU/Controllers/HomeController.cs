@@ -24,5 +24,19 @@ namespace Lab1_WOMU.Controllers
         {
             return View();
         }
+
+
+        public ActionResult OrderKoll(string id)
+        {
+            //var order = from m in db.Movies select m;
+
+            //if (!String.IsNullOrEmpty(id))
+            //{
+            //    order = order.Where(s => s.Title.Contains(searchString));
+            //}
+
+            //return View(order);
+            return View();
+        }
     }
 }
