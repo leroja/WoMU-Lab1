@@ -43,6 +43,26 @@ namespace Lab1_WOMU.Controllers
         }
 
 
+        public ActionResult OrderKoll(string SearchString)
+        {
+            var order = from m in db.Produkter
+                        select m;
+
+            //int temp;
+            //if (!String.IsNullOrEmpty(SearchString) && int.TryParse(SearchString, out temp))
+            //{
+            //    order = order.Where(s => s.ProduktID.Equals(SearchString));
+            //}
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                order = order.Where(s => s.ProduktNamn.Contains(SearchString));
+            }
+
+
+            return View(order);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

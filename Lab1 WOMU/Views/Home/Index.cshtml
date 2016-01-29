@@ -1,12 +1,19 @@
-﻿
-<!DOCTYPE html>
+﻿@model IEnumerable<Lab1_WOMU.Models.Order>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Home";
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <h3></h3>
-</body>
-</html>
+
+<h2>Order koll</h2>
+
+<p>
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        OrderID: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="search" />
+    </p>
+    }
+    </p>
