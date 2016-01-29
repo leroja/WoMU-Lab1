@@ -12,7 +12,7 @@ namespace Lab1_WOMU.Controllers
 {
     public class ProduktController : Controller
     {
-        private ProduktDBContext db = new ProduktDBContext();
+        private DatabaseTest db = new DatabaseTest();
 
         // GET: Produkt
         public ActionResult Index()

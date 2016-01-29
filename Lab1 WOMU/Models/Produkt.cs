@@ -15,8 +15,11 @@ namespace Lab1_WOMU.Models
         public int AntalILager { get; set; }
     }
 
-    public class ProduktDBContext : DbContext
+    public class DatabaseTest : DbContext
     {
         public DbSet<Produkt> Produkter { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderRad> OrderRad { get; set; }
+        public DbSet<Kund> Kund { get; set; }
     }
 }
