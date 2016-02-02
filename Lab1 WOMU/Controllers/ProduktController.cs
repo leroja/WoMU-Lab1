@@ -7,12 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Lab1_WOMU.Models;
+using Lab1_WOMU.Models.ViewModels;
 
 namespace Lab1_WOMU.Controllers
 {
     public class ProduktController : Controller
     {
-        private DatabaseTest db = new DatabaseTest();
+        private DatabaseTest1 db = new DatabaseTest1();
 
         // GET: Produkt
         public ActionResult Index()
@@ -45,8 +46,29 @@ namespace Lab1_WOMU.Controllers
 
         public ActionResult OrderKoll(string SearchString)
         {
-            var order = from m in db.Produkter
-                        select m;
+
+
+            var order = db.OrderRad.Include(c => c.Produkt);
+
+            //var order = from o in db.Order
+            //            join or in db.OrderRad
+            //            on o.OrderID equals or.OrderID
+            //            select new 
+            //            {
+            //                or,
+            //                o
+            //            };
+
+
+            //var order = from o in db.Order
+            //            join or in db.OrderRad
+            //            on o.OrderID equals or.OrderID
+            //            select new OrderViewModel
+            //            {
+            //                allOrderRader = or,
+            //                allOrders = o
+
+            //            };
 
             //int temp;
             //if (!String.IsNullOrEmpty(SearchString) && int.TryParse(SearchString, out temp))
@@ -54,13 +76,19 @@ namespace Lab1_WOMU.Controllers
             //    order = order.Where(s => s.ProduktID.Equals(SearchString));
             //}
 
-            if (!String.IsNullOrEmpty(SearchString))
+            //if (!String.IsNullOrEmpty(SearchString))
+            //{
+            //    order = order.Where(s => s.o.OrderID.Equals(SearchString));
+            //}
+
+            int temp = 0;
+
+            if ((!String.IsNullOrEmpty(SearchString)) && int.TryParse(SearchString, out temp))
             {
-                order = order.Where(s => s.ProduktNamn.Contains(SearchString));
+                //order = order.Where(s => s.Order.OrderID.Equals(SearchString));
+                order = order.Where(s => s.Order.OrderID.Equals(temp));
             }
-
-
-            return View(order);
+            return View(order.ToList());
         }
 
 

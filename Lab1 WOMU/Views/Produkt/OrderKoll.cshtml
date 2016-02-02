@@ -1,0 +1,50 @@
+﻿@*@model IEnumerable<Lab1_WOMU.Models.ViewModels.OrderViewModel>*@
+@model IEnumerable<Lab1_WOMU.Models.OrderRad>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Order Koll";
+}
+
+<h2>Order koll</h2>
+
+<p>
+
+    @using (Html.BeginForm("OrderKoll", "Produkt", FormMethod.Get))
+    {
+    <p>
+        OrderID: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Search" />
+    </p>
+    }
+    </p>
+
+
+    <table style="width:50%">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderID)
+            </th>
+            <th>
+                Produkt
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Antal)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderID)
+                </td>
+                <td>
+                    @*    @Html.DisplayFor(modelItem => item.Produkt.ProduktNamn)*@
+                    @Html.ActionLink(item.Produkt.ProduktNamn, "Details", new { id = item.ProduktID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Antal)
+                </td>
+            </tr>
+        }
+    </table>

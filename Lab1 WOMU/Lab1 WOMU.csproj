@@ -144,13 +144,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\Lab1_WOMU.Models.DatabaseTest.mdf" />
-    <Content Include="App_Data\Lab1_WOMU.Models.DatabaseTest_log.ldf">
-      <DependentUpon>Lab1_WOMU.Models.DatabaseTest.mdf</DependentUpon>
+    <Content Include="App_Data\Lab1_WOMU.Models.DatabaseTest1.mdf" />
+    <Content Include="App_Data\Lab1_WOMU.Models.DatabaseTest1_log.ldf">
+      <DependentUpon>Lab1_WOMU.Models.DatabaseTest1.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -219,10 +215,20 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602021321105_test.cs" />
+    <Compile Include="Migrations\201602021321105_test.Designer.cs">
+      <DependentUpon>201602021321105_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602021333452_OrFKPro.cs" />
+    <Compile Include="Migrations\201602021333452_OrFKPro.Designer.cs">
+      <DependentUpon>201602021333452_OrFKPro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Kund.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderRad.cs" />
     <Compile Include="Models\Produkt.cs" />
+    <Compile Include="Models\ViewModels\OrderViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -241,8 +247,8 @@
     <Content Include="Views\Produkt\Details.cshtml" />
     <Content Include="Views\Produkt\Index.cshtml" />
     <Content Include="Views\Produkt\BuyPage.cshtml" />
-    <Content Include="Views\Produkt\OrderKoll.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Produkt\OrderKoll.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -252,6 +258,15 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602021321105_test.resx">
+      <DependentUpon>201602021321105_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602021333452_OrFKPro.resx">
+      <DependentUpon>201602021333452_OrFKPro.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -16,5 +16,9 @@ namespace Lab1_WOMU.Models
         [Column(Order = 2)]
         public int OrderID { get; set; }
         public int Antal { get; set; }
+
+
+        public virtual Order Order { get; set; }
+        public virtual Produkt Produkt { get; set; }
     }
 }

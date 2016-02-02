@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Lab1_WOMU.Models.Order>
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Home";
 }
@@ -9,8 +8,8 @@
 
 <p>
 
-    @using (Html.BeginForm())
-    {
+    @using (Html.BeginForm("OrderKoll", "Produkt", FormMethod.Get))
+   {
     <p>
         OrderID: @Html.TextBox("SearchString") <br />
         <input type="submit" value="search" />
