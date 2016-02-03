@@ -2,4 +2,42 @@
 
 @{
     ViewBag.Title = "Buy Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h2>Buy Page</h2>
+
+<div>
+    <h4>Produkt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProduktNamn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProduktNamn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pris)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pris)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AntalILager)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AntalILager)
+        </dd>
+    </dl>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        Antal: @Html.TextBox("SearchString",1)
+        <input type="submit" value="Add to Cart" class="btn btn-default" />
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
