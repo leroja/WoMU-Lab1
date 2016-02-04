@@ -10,7 +10,7 @@ namespace Lab1_WOMU.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        private DatabaseTest1 storeDB = new DatabaseTest1();
+        private DatabaseTest1 db = new DatabaseTest1();
         //
         // GET: /ShoppingCart/
         public ActionResult Index()
@@ -31,10 +31,8 @@ namespace Lab1_WOMU.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
-            Console.WriteLine("afsdfsdgsdg");
-
             // Retrieve the item from the database
-            var addedItem = storeDB.Produkter
+            var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
 
             // Add it to the shopping cart
@@ -53,9 +51,6 @@ namespace Lab1_WOMU.Controllers
                 DeleteId = id
             };
             return Json(results);
-
-            // Go back to the main store page for more shopping
-            // return RedirectToAction("Index");
         }
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
@@ -66,7 +61,7 @@ namespace Lab1_WOMU.Controllers
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             // Get the name of the Produkt to display confirmation
-            string itemName = storeDB.Produkter
+            string itemName = db.Produkter
                 .Single(item => item.ProduktID == id).ProduktNamn;
 
             // Remove from cart

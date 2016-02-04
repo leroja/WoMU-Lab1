@@ -199,7 +199,7 @@ namespace Lab1_WOMU.Models
             db.SaveChanges();
             // Empty the shopping cart
             EmptyCart();
-            // Return the OrderId as the confirmation number
+
             return order;
         }
 

@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<Lab1_WOMU.Models.ViewModels.OrderViewModel>*@
-@model IEnumerable<Lab1_WOMU.Models.OrderRad>
+﻿@model IEnumerable<Lab1_WOMU.Models.OrderRad>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -46,4 +45,12 @@
                 </td>
             </tr>
         }
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order.Total)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => Model.FirstOrDefault().Order.Total)
+            </td>
+        </tr>
     </table>
