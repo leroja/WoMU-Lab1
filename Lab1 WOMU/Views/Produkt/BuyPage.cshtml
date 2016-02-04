@@ -5,6 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        // Document.ready -> link up remove event handler
+        $(".AddLink").click(function () {
+            // Get the id from the link
+            var recordToAdd = $(this).attr("data-id");
+            if (recordToAdd != '') {
+                // Perform the ajax post
+                $.post("/ShoppingCart/AddToCart", { "id": recordToAdd },
+                    function (data) {
+                        $('#cart-status').text(data.CartCount);
+                    });
+            }
+        });
+    });
+</script>
+
+
+
 <h2>Buy Page</h2>
 
 <div>
@@ -32,17 +52,18 @@
     </dl>
 </div>
 
-@using (Html.BeginForm())
-{
-    @*<div class="form-group">*@
-        <div class="col-md-offset-2 col-md-10">
-            @*@Html.EditorFor(model => model.PostAdress, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PostAdress, "", new { @class = "text-danger" })*@
-            Antal: @Html.TextBox("SearchString", 1)
-            <input type="submit" value="Add to Cart" class="btn btn-default" />
-        </div>
-    @*</div>*@
-}
+
+<a href="#" class="AddLink"
+   data-id="@Model.ProduktID" data-toggle="modal" data-target="#myModal">
+    Add to cart
+</a>
+<!--@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = Model.ProduktID }, new { htmlAttributes = new { @data_toggle = "modal", @data_target = "#myModal" } })-->
+
+@*<p class="button">
+        @Html.ActionLink("Add to cart", "AddToCart",
+        "ShoppingCart", new { id = Model.ProduktID }, "")
+</p>*@
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

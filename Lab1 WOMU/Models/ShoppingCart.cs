@@ -36,7 +36,7 @@ namespace Lab1_WOMU.Models
                 // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
-                    CartItemID = Produkt.ProduktID,
+                    ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
                     Count = count,
                     DateCreated = DateTime.Now
@@ -68,7 +68,7 @@ namespace Lab1_WOMU.Models
             return GetCart(controller.HttpContext);
         }
 
-        public int AddToCart(Produkt Produkt, int count)
+        public int AddToCart(Produkt Produkt)
         {
             // Get the matching cart and item instances
             var cartItem = db.CartItem.SingleOrDefault(
@@ -80,9 +80,9 @@ namespace Lab1_WOMU.Models
                 // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
-                    CartItemID = Produkt.ProduktID,
+                    ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
-                    Count = count,
+                    Count = 5,
                     DateCreated = DateTime.Now
                 };
                 db.CartItem.Add(cartItem);
@@ -91,7 +91,7 @@ namespace Lab1_WOMU.Models
             {
                 //    // If the item does exist in the cart, 
                 //    // then uppdate the quantity
-                cartItem.Count = count;
+                cartItem.Count = 5;
             }
         // Save changes
         db.SaveChanges();
@@ -160,12 +160,7 @@ namespace Lab1_WOMU.Models
                               where cartItems.CartId == ShoppingCartID
                               select (int?)cartItems.Count *
                               cartItems.Produkt.Pris).Sum();
-            //int total = (from cartItems in db.CartItem
-            //                  where cartItems.CartId == ShoppingCartID
-            //                  select (int)cartItems.Count *
-            //                  cartItems.Produkt.Pris).Sum();
-
-            //return total;
+            
             return Convert.ToInt32( total ?? decimal.Zero);
         }
 
@@ -192,7 +187,7 @@ namespace Lab1_WOMU.Models
                     };
 
                     // Set the order total of the shopping cart
-                    orderTotal += (item.Count * item.Produkt.Pris);
+                    orderTotal += orderDetail.TotalPris;
                     order.OrderRader.Add(orderDetail);
                     db.OrderRad.Add(orderDetail);
                 }

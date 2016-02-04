@@ -31,6 +31,8 @@ namespace Lab1_WOMU.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
+            Console.WriteLine("afsdfsdgsdg");
+
             // Retrieve the item from the database
             var addedItem = storeDB.Produkter
                 .Single(item => item.ProduktID == id);
@@ -38,7 +40,7 @@ namespace Lab1_WOMU.Controllers
             // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            int count = cart.AddToCart(addedItem,0);
+            int count = cart.AddToCart(addedItem);
 
             // Display the confirmation message
             var results = new SCremoveVM
