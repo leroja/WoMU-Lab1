@@ -60,7 +60,9 @@ namespace Lab1_WOMU.Controllers
                     order.Total = 0;
                     foreach (var item in cart.GetCartItems())
                     {
-                        if (item.Count < item.Produkt.AntalILager)
+                        var prod = db.Produkter.Where(a => a.ProduktID == item.ProduktID).Single();
+
+                        if (item.Count < prod.AntalILager)
                         {
                             var orderRad = new OrderRad
                             {
@@ -71,9 +73,12 @@ namespace Lab1_WOMU.Controllers
                                 Antal = item.Count
                             };
 
+                            prod.AntalILager -= item.Count;
+
                             // Set the order total of the shopping cart
                             order.Total += orderRad.TotalPris;
                             order.OrderRader.Add(orderRad);
+                            
                         }
                     }
                     db.Order.Add(order);
