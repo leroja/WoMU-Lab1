@@ -14,6 +14,7 @@ namespace Lab1_WOMU.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd H:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime OrderDate { get; set; }
+        public int Total { get; set; }
 
         public virtual ICollection<OrderRad> OrderRader { get; set; }
     }

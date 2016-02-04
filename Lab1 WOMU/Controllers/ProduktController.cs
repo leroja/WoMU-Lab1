@@ -55,8 +55,6 @@ namespace Lab1_WOMU.Controllers
 
         public ActionResult OrderKoll(string SearchString)
         {
-
-
             var order = db.OrderRad.Include(c => c.Produkt);
 
             int temp = 0;
@@ -69,6 +67,21 @@ namespace Lab1_WOMU.Controllers
             return View(order.ToList());
         }
 
+
+
+        public ActionResult OrderItemDetail(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produkt produkt = db.Produkter.Find(id);
+            if (produkt == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produkt);
+        }
 
         protected override void Dispose(bool disposing)
         {

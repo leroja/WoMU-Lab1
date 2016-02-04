@@ -1,48 +1,56 @@
 ﻿@model Lab1_WOMU.Models.Produkt
 
 @{
-    ViewBag.Title = "Buy Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Details";
 }
 
-<h2>Buy Page</h2>
+<h2>Details</h2>
 
 <div>
     <h4>Produkt</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProduktNamn)
+            @Html.DisplayNameFor(model => model.ProduktID)
         </dt>
         <dd>
+            @Html.DisplayFor(model => model.ProduktID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProduktNamn)
+        </dt>
+
+        <dd>
             @Html.DisplayFor(model => model.ProduktNamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProduktBeskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProduktBeskrivning)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Pris)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.Pris)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.AntalILager)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.AntalILager)
         </dd>
+
     </dl>
 </div>
-
-@using (Html.BeginForm())
-{
-    @*<div class="form-group">*@
-        <div class="col-md-offset-2 col-md-10">
-            @*@Html.EditorFor(model => model.PostAdress, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PostAdress, "", new { @class = "text-danger" })*@
-            Antal: @Html.TextBox("SearchString", 1)
-            <input type="submit" value="Add to Cart" class="btn btn-default" />
-        </div>
-    @*</div>*@
-}
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "OrderKoll")
 </p>

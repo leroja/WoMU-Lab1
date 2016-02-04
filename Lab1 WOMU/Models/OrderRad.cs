@@ -15,6 +15,7 @@ namespace Lab1_WOMU.Models
         [Key]
         [Column(Order = 2)]
         public int OrderID { get; set; }
+        public int TotalPris { get; set; }
         public int Antal { get; set; }
 
 

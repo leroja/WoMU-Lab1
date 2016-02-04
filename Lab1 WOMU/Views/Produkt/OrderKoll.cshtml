@@ -39,7 +39,7 @@
                     @Html.DisplayFor(modelItem => item.OrderID)
                 </td>
                 <td>
-                    @Html.ActionLink(item.Produkt.ProduktNamn, "Details", new { id = item.ProduktID })
+                    @Html.ActionLink(item.Produkt.ProduktNamn, "OrderItemDetail", new { id = item.ProduktID })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Antal)

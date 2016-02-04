@@ -211,7 +211,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KundsController.cs" />
     <Compile Include="Controllers\ProduktController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -223,12 +225,20 @@
     <Compile Include="Migrations\201602021333452_OrFKPro.Designer.cs">
       <DependentUpon>201602021333452_OrFKPro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602031416467_AddCartItem.cs" />
+    <Compile Include="Migrations\201602031416467_AddCartItem.Designer.cs">
+      <DependentUpon>201602031416467_AddCartItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Kund.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderRad.cs" />
     <Compile Include="Models\Produkt.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\ViewModels\OrderViewModel.cs" />
+    <Compile Include="Models\ViewModels\SCremoveVM.cs" />
+    <Compile Include="Models\ViewModels\ShoppingCartVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +259,14 @@
     <Content Include="Views\Produkt\BuyPage.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Produkt\OrderKoll.cshtml" />
+    <Content Include="Views\Produkt\OrderItemDetail.cshtml" />
+    <Content Include="Views\Kunds\Create.cshtml" />
+    <Content Include="Views\Kunds\Delete.cshtml" />
+    <Content Include="Views\Kunds\Details.cshtml" />
+    <Content Include="Views\Kunds\Edit.cshtml" />
+    <Content Include="Views\Kunds\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\CartSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -266,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602021333452_OrFKPro.resx">
       <DependentUpon>201602021333452_OrFKPro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602031416467_AddCartItem.resx">
+      <DependentUpon>201602031416467_AddCartItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -27,6 +27,7 @@ namespace Lab1_WOMU.Models
         public DbSet<OrderRad> OrderRad { get; set; }
         public DbSet<Kund> Kund { get; set; }
 
+        public DbSet<CartItem> CartItem { get; set; }
 
     }
 }
