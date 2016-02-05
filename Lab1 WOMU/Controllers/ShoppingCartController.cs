@@ -10,7 +10,7 @@ namespace Lab1_WOMU.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        private DatabaseTest1 storeDB = new DatabaseTest1();
+        private DatabaseTest1 db = new DatabaseTest1();
         //
         // GET: /ShoppingCart/
         public ActionResult Index()
@@ -34,7 +34,7 @@ namespace Lab1_WOMU.Controllers
             Console.WriteLine("afsdfsdgsdg");
 
             // Retrieve the item from the database
-            var addedItem = storeDB.Produkter
+            var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
 
             // Add it to the shopping cart
@@ -62,11 +62,12 @@ namespace Lab1_WOMU.Controllers
         [HttpPost]
         public ActionResult RemoveFromCart(int id)
         {
+            
             // Remove the item from the cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             // Get the name of the Produkt to display confirmation
-            string itemName = storeDB.Produkter
+            string itemName = db.Produkter
                 .Single(item => item.ProduktID == id).ProduktNamn;
 
             // Remove from cart
@@ -93,6 +94,99 @@ namespace Lab1_WOMU.Controllers
 
             ViewData["CartCount"] = cart.GetCount();
             return PartialView("CartSummary");
+        }
+        [HttpPost]
+        public ActionResult CountP(int id)
+        {
+            var Temp = db.CartItem.Single(
+               Temp1 => Temp1.CartItemID == id);
+
+            var Temp2 = db.CartItem.Single(
+               Temp1 => Temp1.CartItemID == id);
+
+            Temp.Count = Temp.Count + 1;
+            db.SaveChanges();
+
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            if (Temp.Count < Temp.Produkt.AntalILager)
+            {
+                var results = new CountModelView
+                {
+                    Message = Temp.Produkt.ProduktNamn + "has been change to" + Temp.Count + "st",
+                    ItemCount = Temp.Count,
+                    CartTotal = cart.GetTotal(),
+                    CartCount = cart.GetCount(),
+                    ItemID = Temp.ProduktID
+                };
+                db.SaveChanges();
+                return Json(results);
+            }
+            else
+            {
+                Temp.Count = Temp.Count - 1;
+                db.SaveChanges();
+                var results = new CountModelView
+                {
+                    Message = "Inga mer Produkter i Lager",
+                    ItemCount = Temp2.Count,
+                    CartTotal = cart.GetTotal(),
+                    CartCount = cart.GetCount(),
+                    ItemID = Temp2.ProduktID
+                };
+                
+                return Json(results);
+            }
+
+
+        }
+        public ActionResult CountM(int id)
+        {
+            {
+                var Temp = db.CartItem.Single(
+                Temp1 => Temp1.CartItemID == id);
+
+                var Temp2 = db.CartItem.Single(
+                   Temp1 => Temp1.CartItemID == id);
+
+                Temp.Count = Temp.Count - 1;
+                db.SaveChanges();
+
+                // Remove the item from the cart
+                var cart = ShoppingCart.GetCart(this.HttpContext);
+
+                if (Temp.Count > 0)
+                {
+                    // Display the confirmation message
+                    var results = new CountModelView
+                    {
+                        Message = ("en" + Temp.Produkt.ProduktNamn + " har tagits bort från din kundkorg"),
+                        ItemCount = Temp.Count,
+                        CartTotal = cart.GetTotal(),
+                        CartCount = cart.GetCount(),
+                        ItemID = Temp.ProduktID
+                    };
+                    db.SaveChanges();
+                    return Json(results);
+                }
+                else
+                {
+                    Temp.Count = Temp.Count = 0;
+                    db.SaveChanges();
+                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID); 
+                    var results = new CountModelView
+                    {
+                        Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn"),
+                        CartTotal = cart.GetTotal(),
+                        CartCount = cart.GetCount(),
+                        ItemID = Temp.ProduktID
+                    };
+                    return Json(results);
+
+                }
+
+            }
+
+
         }
     }
 }

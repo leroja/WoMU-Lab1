@@ -29,6 +29,52 @@
         });
     });
 </script>
+<script type="text/javascript">
+    $(function () {
+        // Document.ready -> link up remove event handler
+        $(".CountM").click(function () {
+            // Get the id from the link
+            var recordToDelete = $(this).attr("data-id");
+            if (recordToDelete != '') {
+                // Perform the ajax post
+                $.post("/ShoppingCart/CountM", { "id": recordToDelete },
+                    function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.ItemID).fadeOut('slow');
+                        } else {
+                            $('#item-count-' + data.ItemID).text(data.ItemCount);
+                        }
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text(data.CartCount);
+                    });
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".CountP").click(function () {
+            // Get the id from the link
+            var recordToAdd = $(this).attr("data-id");
+            if (recordToAdd != '') {
+                // Perform the ajax post
+                $.post("/ShoppingCart/CountP", { "id": recordToAdd },
+                    function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        $('#item-count-'+data.ItemID).text(data.ItemCount);
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text(data.CartCount);
+                    });
+            }
+        });
+    });
+</script>
 <h3>
     <em>Review</em> your cart:
 </h3>
@@ -58,6 +104,7 @@
                                 Quantity
                             </th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     @foreach (var item in Model.CartItems)
@@ -73,6 +120,16 @@
                                 @item.Count
                             </td>
                             <td>
+                                <a href="#" class="CountP"
+                                   data-id="@item.CartItemID">
+                                    +
+                                </a>
+                                <a href="#" class="CountM"
+                                   data-id="@item.CartItemID">
+                                    -
+                                </a>
+                            </td>
+                            <td>
                                 <a href="#" class="RemoveLink"
                                    data-id="@item.ProduktID">
                                     Remove
@@ -85,6 +142,7 @@
                         <td>
                             Total
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td id="cart-total">

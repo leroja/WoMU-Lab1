@@ -23,8 +23,6 @@
     });
 </script>
 
-
-
 <h2>Buy Page</h2>
 
 <div>
@@ -53,16 +51,13 @@
 </div>
 
 
+<form></form>
 <a href="#" class="AddLink"
    data-id="@Model.ProduktID" data-toggle="modal" data-target="#myModal">
     Add to cart
 </a>
-<!--@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = Model.ProduktID }, new { htmlAttributes = new { @data_toggle = "modal", @data_target = "#myModal" } })-->
-
-@*<p class="button">
-        @Html.ActionLink("Add to cart", "AddToCart",
-        "ShoppingCart", new { id = Model.ProduktID }, "")
-</p>*@
+<!--@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = Model.ProduktID },
+    new { htmlAttributes = new { @data_toggle = "modal", @data_target = "#myModal" } })-->
 
 <p>
     @Html.ActionLink("Back to List", "Index")

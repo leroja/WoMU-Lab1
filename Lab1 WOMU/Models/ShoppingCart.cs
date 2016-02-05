@@ -82,7 +82,7 @@ namespace Lab1_WOMU.Models
                 {
                     ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
-                    Count = 5,
+                    Count = 1,
                     DateCreated = DateTime.Now
                 };
                 db.CartItem.Add(cartItem);
@@ -91,7 +91,7 @@ namespace Lab1_WOMU.Models
             {
                 //    // If the item does exist in the cart, 
                 //    // then uppdate the quantity
-                cartItem.Count = 5;
+                cartItem.Count = cartItem.Count + 1;
             }
         // Save changes
         db.SaveChanges();
