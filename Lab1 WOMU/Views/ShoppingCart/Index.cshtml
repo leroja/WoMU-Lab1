@@ -76,7 +76,7 @@
     });
 </script>
 <h3>
-    <em>Review</em> your cart:
+    <em>Översikt</em> 
 </h3>
 
 @{
@@ -85,7 +85,7 @@
     {
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Order Summary</h3>
+                <h3 class="panel-title">Order Samanfattning</h3>
             </div>
             <div class="panel-body">
 
@@ -95,13 +95,13 @@
                     <thead>
                         <tr>
                             <th>
-                                Item Name
+                                Produkt Namn
                             </th>
                             <th>
-                                Price (each)
+                                Styck Pris 
                             </th>
                             <th>
-                                Quantity
+                                Antal
                             </th>
                             <th></th>
                             <th></th>
@@ -111,7 +111,7 @@
                     {
                         <tr id="row-@item.ProduktID">
                             <td>
-                                @Html.ActionLink(item.Produkt.ProduktNamn, "Details", "ShoppingCart", new { id = item.ProduktID }, null)
+                                @Html.ActionLink(item.Produkt.ProduktNamn, "Details ", "ShoppingCart", new { id = item.ProduktID }, null)
                             </td>
                             <td>
                                 @item.Produkt.Pris
@@ -132,8 +132,8 @@
                             <td>
                                 <a href="#" class="RemoveLink"
                                    data-id="@item.ProduktID">
-                                    Remove
-                                    from cart
+                                    Tabort
+                                    Från Varukorg
                                 </a>
                             </td>
                         </tr>
@@ -160,7 +160,7 @@
     {
         <div>
             <p>
-                There are no items in your cart currently. Please shop for something and add items..
+                Det finns inga varor i din varukorg. Var snäll och lägg till varor i varukorgen
             </p>
         </div>
     }
