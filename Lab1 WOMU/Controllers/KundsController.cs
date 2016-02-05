@@ -13,13 +13,13 @@ namespace Lab1_WOMU.Controllers
     public class KundsController : Controller
     {
         private DatabaseTest1 db = new DatabaseTest1();
-        /*
+        
         // GET: Kunds
         public ActionResult Index()
         {
             return View(db.Kund.ToList());
         }
-        */
+        
         /*
         // GET: Kunds/Details/5
         public ActionResult Details(int? id)
@@ -53,7 +53,7 @@ namespace Lab1_WOMU.Controllers
             {
                 db.Kund.Add(kund);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create", "Order");
             }
 
             return View(kund);

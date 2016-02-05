@@ -31,8 +31,6 @@ namespace Lab1_WOMU.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
-            Console.WriteLine("afsdfsdgsdg");
-
             // Retrieve the item from the database
             var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
@@ -53,9 +51,6 @@ namespace Lab1_WOMU.Controllers
                 DeleteId = id
             };
             return Json(results);
-
-            // Go back to the main store page for more shopping
-            // return RedirectToAction("Index");
         }
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
