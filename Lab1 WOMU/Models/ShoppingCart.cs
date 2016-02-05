@@ -20,41 +20,6 @@ namespace Lab1_WOMU.Models
 
 
 
-
-
-
-
-        public int ChangeProduktCount(Produkt Produkt, int count)
-        {
-            // Get the matching cart and item instances
-            var cartItem = db.CartItem.SingleOrDefault(
-                c => c.CartId == ShoppingCartID
-                && c.ProduktID == Produkt.ProduktID);
-
-            if (cartItem == null)
-            {
-                // Create a new cart item if no cart item exists
-                cartItem = new CartItem
-                {
-                    ProduktID = Produkt.ProduktID,
-                    CartId = ShoppingCartID,
-                    Count = count,
-                    DateCreated = DateTime.Now
-                };
-                db.CartItem.Add(cartItem);
-            }
-            else
-            {
-                cartItem.Count = count;
-            }
-            // Save changes
-            db.SaveChanges();
-
-            return cartItem.Count;
-        }
-
-
-
         public static ShoppingCart GetCart(HttpContextBase context)
         {
             var cart = new ShoppingCart();
@@ -70,14 +35,12 @@ namespace Lab1_WOMU.Models
 
         public int AddToCart(Produkt Produkt)
         {
-            // Get the matching cart and item instances
             var cartItem = db.CartItem.SingleOrDefault(
                 c => c.CartId == ShoppingCartID
                 && c.ProduktID == Produkt.ProduktID);
 
-            if (cartItem == null)
+            if (cartItem == null) // if no cartItem exists, create a new one
             {
-                // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
                     ProduktID = Produkt.ProduktID,
@@ -93,7 +56,7 @@ namespace Lab1_WOMU.Models
                 //    // then uppdate the quantity
                 cartItem.Count = cartItem.Count + 1;
             }
-        // Save changes
+        
         db.SaveChanges();
 
             return cartItem.Count;
@@ -101,9 +64,6 @@ namespace Lab1_WOMU.Models
 
         public int RemoveFromCart(int id)
         {
-
-
-            // Get the cart
 
             var cartItem = db.CartItem.Single(
                 cart => cart.CartId == ShoppingCartID
@@ -115,7 +75,7 @@ namespace Lab1_WOMU.Models
             if (cartItem != null)
             {
                 db.CartItem.Remove(cartItem);
-                //Save changes
+
                 db.SaveChanges();
             }
             return itemCount;
@@ -130,7 +90,7 @@ namespace Lab1_WOMU.Models
             {
                 db.CartItem.Remove(cartItem);
             }
-            // Save changes
+    
             db.SaveChanges();
         }
 
@@ -161,49 +121,49 @@ namespace Lab1_WOMU.Models
                               select (int?)cartItems.Count *
                               cartItems.Produkt.Pris).Sum();
             
-            return Convert.ToInt32( total ?? decimal.Zero);
+            return Convert.ToInt32(total ?? decimal.Zero);
         }
 
-        public Order CreateOrder(Order order)
+
+        public List<Produkt> GetRelatedProdukts()
         {
-            int orderTotal = 0;
-            order.OrderRader = new List<OrderRad>();
+            List<Produkt> related = new List<Produkt>();
 
-            var cartItems = GetCartItems();
-            // Iterate over the items in the cart, 
-            // adding the order details for each
-            foreach (var item in cartItems)
+            var cart = GetCartItems();
+
+            List<int> orderIDs = new List<int>();
+
+            foreach (var cartItem in cart)
             {
+                var temp = db.OrderRad.Where(o => o.ProduktID == cartItem.ProduktID);
 
-                if (item.Count < item.Produkt.AntalILager)
+                var temp2 = temp.ToList();
+
+                foreach(var t in temp2)
                 {
-                    var orderDetail = new OrderRad
-                    {
-
-                        ProduktID = item.ProduktID,
-                        OrderID = order.OrderID,
-                        TotalPris = item.Produkt.Pris * item.Count,
-                        Antal = item.Count
-                    };
-
-                    // Set the order total of the shopping cart
-                    orderTotal += orderDetail.TotalPris;
-                    order.OrderRader.Add(orderDetail);
-                    db.OrderRad.Add(orderDetail);
-                }
+                    orderIDs.Add(t.OrderID);
+                }    
             }
-            // Set the order's total to the orderTotal count
-            order.Total = orderTotal;
 
-            // Save the order
-            db.SaveChanges();
-            // Empty the shopping cart
-            EmptyCart();
+            foreach(var ord in orderIDs)
+            {
+                var order = db.Order.Where(m => m.OrderID == ord);
 
-            return order;
+                foreach(var o in order)
+                {
+                    foreach(var rad in o.OrderRader)
+                    {
+                        related.Add(rad.Produkt);
+                    }
+                }
+
+            }
+
+            return related.Distinct().ToList();
         }
 
-        // We're using HttpContextBase to allow access to cookies.
+
+        
         public string GetCartId(HttpContextBase context)
         {
             if (context.Session[CartSessionKey] == null)
@@ -215,9 +175,9 @@ namespace Lab1_WOMU.Models
                 }
                 else
                 {
-                    // Generate a new random GUID using System.Guid class
+                    
                     Guid tempCartId = Guid.NewGuid();
-                    // Send tempCartId back to client as a cookie
+
                     context.Session[CartSessionKey] = tempCartId.ToString();
                 }
             }

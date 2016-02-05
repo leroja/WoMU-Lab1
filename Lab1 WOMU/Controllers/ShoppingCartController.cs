@@ -17,13 +17,13 @@ namespace Lab1_WOMU.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            // Set up our ViewModel
             var viewModel = new ShoppingCartVM
             {
                 CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
+                CartTotal = cart.GetTotal(),
+                RelatedProdukts = cart.GetRelatedProdukts()
             };
-            // Return the view
+
             return View(viewModel);
         }
         //
@@ -31,11 +31,11 @@ namespace Lab1_WOMU.Controllers
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
-            // Retrieve the item from the database
+
             var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
 
-            // Add it to the shopping cart
+            
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             int count = cart.AddToCart(addedItem);
@@ -58,14 +58,14 @@ namespace Lab1_WOMU.Controllers
         public ActionResult RemoveFromCart(int id)
         {
             
-            // Remove the item from the cart
+            
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             // Get the name of the Produkt to display confirmation
             string itemName = db.Produkter
                 .Single(item => item.ProduktID == id).ProduktNamn;
 
-            // Remove from cart
+            
             int itemCount = cart.RemoveFromCart(id);
 
             // Display the confirmation message
@@ -80,16 +80,18 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-        //
-        // GET: /ShoppingCart/CartSummary
-        [ChildActionOnly]
-        public ActionResult CartSummary()
-        {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+        ////
+        //// GET: /ShoppingCart/CartSummary
+        //[ChildActionOnly]
+        //public ActionResult CartSummary()
+        //{
+        //    var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            ViewData["CartCount"] = cart.GetCount();
-            return PartialView("CartSummary");
-        }
+        //    ViewData["CartCount"] = cart.GetCount();
+        //    return PartialView("CartSummary");
+        //}
+
+
         [HttpPost]
         public ActionResult CountP(int id)
         {
@@ -146,7 +148,7 @@ namespace Lab1_WOMU.Controllers
                 Temp.Count = Temp.Count - 1;
                 db.SaveChanges();
 
-                // Remove the item from the cart
+                
                 var cart = ShoppingCart.GetCart(this.HttpContext);
 
                 if (Temp.Count > 0)
@@ -176,12 +178,8 @@ namespace Lab1_WOMU.Controllers
                         ItemID = Temp.ProduktID
                     };
                     return Json(results);
-
                 }
-
             }
-
-
         }
     }
 }
