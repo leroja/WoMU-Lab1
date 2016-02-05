@@ -3,6 +3,7 @@ using Lab1_WOMU.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -90,6 +91,20 @@ namespace Lab1_WOMU.Controllers
             ViewData["CartCount"] = cart.GetCount();
             return PartialView("CartSummary");
         }
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produkt produkt = db.Produkter.Find(id);
+            if (produkt == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produkt);
+        }
         [HttpPost]
         public ActionResult CountP(int id)
         {
@@ -103,11 +118,11 @@ namespace Lab1_WOMU.Controllers
             db.SaveChanges();
 
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            if (Temp.Count < Temp.Produkt.AntalILager)
+            if (Temp.Count <= Temp.Produkt.AntalILager)
             {
                 var results = new CountModelView
                 {
-                    Message = Temp.Produkt.ProduktNamn + "has been change to" + Temp.Count + "st",
+                    Message = Temp.Produkt.ProduktNamn + " has been change to " + Temp.Count + " st.",
                     ItemCount = Temp.Count,
                     CartTotal = cart.GetTotal(),
                     CartCount = cart.GetCount(),
@@ -122,7 +137,7 @@ namespace Lab1_WOMU.Controllers
                 db.SaveChanges();
                 var results = new CountModelView
                 {
-                    Message = "Inga mer Produkter i Lager",
+                    Message = "Inga mer Produkter i Lager.",
                     ItemCount = Temp2.Count,
                     CartTotal = cart.GetTotal(),
                     CartCount = cart.GetCount(),
@@ -154,7 +169,7 @@ namespace Lab1_WOMU.Controllers
                     // Display the confirmation message
                     var results = new CountModelView
                     {
-                        Message = ("en" + Temp.Produkt.ProduktNamn + " har tagits bort från din kundkorg"),
+                        Message = ("en " + Temp.Produkt.ProduktNamn + " har tagits bort från din kundkorg."),
                         ItemCount = Temp.Count,
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
@@ -170,7 +185,7 @@ namespace Lab1_WOMU.Controllers
                     var ItemCount = cart.RemoveFromCart(Temp.ProduktID); 
                     var results = new CountModelView
                     {
-                        Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn"),
+                        Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn."),
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
                         ItemID = Temp.ProduktID
