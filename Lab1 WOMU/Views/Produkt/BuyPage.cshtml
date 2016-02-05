@@ -1,7 +1,7 @@
 ﻿@model Lab1_WOMU.Models.Produkt
 
 @{
-    ViewBag.Title = "Buy Page";
+    ViewBag.Title = "Köp Sida";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,7 +23,6 @@
     });
 </script>
 
-<h2>Buy Page</h2>
 
 <div>
     <h4>Produkt</h4>
@@ -52,11 +51,10 @@
 
 
 <a href="#" class="AddLink"
-   data-id="@Model.ProduktID" data-toggle="modal" data-target="#myModal">
-    Add to cart
+   data-id="@Model.ProduktID" data-toggle="modal" data-target="#myModal" >
+    Lägg till i varukorg
 </a>
 
-
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till Produkt lista", "Index")
 </p>

@@ -76,7 +76,7 @@
     });
 </script>
 <h3>
-    <em>Review</em> your cart:
+    <em>Översikt</em> 
 </h3>
 
 @{
@@ -85,7 +85,7 @@
     {
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Order Summary</h3>
+                <h3 class="panel-title">Order Samanfattning</h3>
             </div>
             <div class="panel-body">
 
@@ -98,7 +98,7 @@
                                 Produkt Namn
                             </th>
                             <th>
-                                Styck Pris
+                                Styck Pris 
                             </th>
                             <th>
                                 Antal
@@ -111,7 +111,7 @@
                     {
                         <tr id="row-@item.ProduktID">
                             <td>
-                                @Html.ActionLink(item.Produkt.ProduktNamn, "Details", "Produkt", new { id = item.ProduktID }, null)
+                                @Html.ActionLink(item.Produkt.ProduktNamn, "Details ", "ShoppingCart", new { id = item.ProduktID }, null)
                             </td>
                             <td>
                                 @item.Produkt.Pris
@@ -132,8 +132,8 @@
                             <td>
                                 <a href="#" class="RemoveLink"
                                    data-id="@item.ProduktID">
-                                    Remove
-                                    from cart
+                                    Tabort
+                                    Från Varukorg
                                 </a>
                             </td>
                         </tr>
@@ -178,7 +178,7 @@
     {
         <div>
             <p>
-                There are currently no produkts in your cart. 
+                Det finns inga varor i din varukorg. Var snäll och lägg till varor i varukorgen
             </p>
         </div>
     }

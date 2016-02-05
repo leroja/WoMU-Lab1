@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Start Sida";
 }
 
 
@@ -11,8 +11,9 @@
     @using (Html.BeginForm("OrderKoll", "Order", FormMethod.Get))
    {
     <p>
+        <a href="~/Views/Home/Index.cshtml"></a>
         OrderID: @Html.TextBox("SearchString") <br />
-        <input type="submit" value="search" />
+        <input type="submit" value="Sök" />
     </p>
     }
     </p>
