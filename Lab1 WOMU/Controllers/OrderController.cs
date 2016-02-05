@@ -14,13 +14,27 @@ namespace Lab1_WOMU.Controllers
     {
         private DatabaseTest1 db = new DatabaseTest1();
         
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// the view
+        /// </returns>
         // GET: Order/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// takes in an unfinished order and finish it, and hen saves it to the database and clears the cart. 
+        /// </summary>
+        /// <param name="order">
+        /// the order that is going to be created
+        /// </param>
+        /// <returns>
+        /// redirect to Order completion page
+        /// </returns>
         // POST: Order/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -73,14 +87,32 @@ namespace Lab1_WOMU.Controllers
             return View(order);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// Id of the completed order
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public ActionResult Completed(int? id)
         {
             ViewBag.Id = id;
             return View();
         }
         
-
+        /// <summary>
+        /// finds all the orderLines that belong the order if the serchstring is valid
+        /// else it return no orderLines
+        /// </summary>
+        /// <param name="SearchString">
+        /// user search input
+        /// </param>
+        /// <returns>
+        /// returns all orderRader that belongs to the sought after order
+        /// or none if the searchstring is empty or not an order
+        /// </returns>
         public ActionResult OrderKoll(string SearchString)
         {
             var order = db.OrderRad.Include(c => c.Produkt);
@@ -98,7 +130,15 @@ namespace Lab1_WOMU.Controllers
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public ActionResult OrderItemDetail(int? id)
         {
             if (id == null)

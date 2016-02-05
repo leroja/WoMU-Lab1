@@ -12,7 +12,14 @@ namespace Lab1_WOMU.Controllers
     public class ShoppingCartController : Controller
     {
         private DatabaseTest1 db = new DatabaseTest1();
-        //
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         // GET: /ShoppingCart/
         public ActionResult Index()
         {
@@ -27,8 +34,44 @@ namespace Lab1_WOMU.Controllers
 
             return View(viewModel);
         }
-        //
-        // GET: /Store/AddToCart/5
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        // GET: Produkt/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produkt produkt = db.Produkter.Find(id);
+            if (produkt == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produkt);
+        }
+
+
+
+        /// <summary>
+        /// adds a product to the cart
+        /// </summary>
+        /// <param name="id">
+        /// id of product that is going to be added to the cart
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        // GET: /AddToCart/5
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
@@ -53,7 +96,16 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-        //
+
+        /// <summary>
+        /// removes a specified product
+        /// </summary>
+        /// <param name="id">
+        /// id of product to be removed
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]
         public ActionResult RemoveFromCart(int id)
@@ -62,7 +114,7 @@ namespace Lab1_WOMU.Controllers
             
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            // Get the name of the Produkt to display confirmation
+
             string itemName = db.Produkter
                 .Single(item => item.ProduktID == id).ProduktNamn;
 
@@ -81,18 +133,15 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-        ////
-        //// GET: /ShoppingCart/CartSummary
-        //[ChildActionOnly]
-        //public ActionResult CartSummary()
-        //{
-        //    var cart = ShoppingCart.GetCart(this.HttpContext);
-
-        //    ViewData["CartCount"] = cart.GetCount();
-        //    return PartialView("CartSummary");
-        //}
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// 
+        /// </returns>
         [HttpPost]
         public ActionResult CountP(int id)
         {
@@ -137,6 +186,13 @@ namespace Lab1_WOMU.Controllers
 
 
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult CountM(int id)
         {
             {

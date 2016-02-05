@@ -15,11 +15,14 @@ namespace Lab1_WOMU.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ShoppingCartID { get; set; }
         public const string CartSessionKey = "CartId";
-
         public virtual ICollection<CartItem> CartItem { get; set; }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static ShoppingCart GetCart(HttpContextBase context)
         {
             var cart = new ShoppingCart();
@@ -33,6 +36,16 @@ namespace Lab1_WOMU.Models
             return GetCart(controller.HttpContext);
         }
 
+
+        /// <summary>
+        /// adds the specified product to the cart
+        /// </summary>
+        /// <param name="Produkt">
+        /// id of the product 
+        /// </param>
+        /// <returns>
+        /// the number of the product in the cartItem
+        /// </returns>
         public int AddToCart(Produkt Produkt)
         {
             var cartItem = db.CartItem.SingleOrDefault(
@@ -52,8 +65,7 @@ namespace Lab1_WOMU.Models
             }
             else
             {
-                //    // If the item does exist in the cart, 
-                //    // then uppdate the quantity
+                // If the item does exist in the cart then uppdate the quantity
                 cartItem.Count = cartItem.Count + 1;
             }
         
@@ -62,6 +74,16 @@ namespace Lab1_WOMU.Models
             return cartItem.Count;
         }
 
+
+        /// <summary>
+        /// removes the specified product from the cart
+        /// </summary>
+        /// <param name="id">
+        /// id of the product 
+        /// </param>
+        /// <returns>
+        /// 0
+        /// </returns>
         public int RemoveFromCart(int id)
         {
 
@@ -81,6 +103,9 @@ namespace Lab1_WOMU.Models
             return itemCount;
         }
 
+        /// <summary>
+        /// Empties the cart
+        /// </summary>
         public void EmptyCart()
         {
             var cartItems = db.CartItem.Where(
@@ -94,22 +119,43 @@ namespace Lab1_WOMU.Models
             db.SaveChanges();
         }
 
+
+        /// <summary>
+        /// return a list of all cartItems that belong to the cart
+        /// </summary>
+        /// <returns>
+        /// a list of cartItems
+        /// </returns>
         public List<CartItem> GetCartItems()
         {
             return db.CartItem.Where(
                 cart => cart.CartId == ShoppingCartID).ToList();
         }
 
+        /// <summary>
+        /// this function gets the count of all item and sums them
+        /// </summary>
+        /// <returns>
+        /// the sum of all items in the cart
+        /// 0 if all entries are null
+        /// </returns>
         public int GetCount()
         {
-            // Get the count of each item in the cart and sum them up
+            
             int? count = (from cartItems in db.CartItem
                           where cartItems.CartId == ShoppingCartID
                           select (int?)cartItems.Count).Sum();
-            // Return 0 if all entries are null
+
             return count ?? 0;
         }
 
+
+        /// <summary>
+        /// sums up the total price of the cart
+        /// </summary>
+        /// <returns>
+        /// the total price of the cart
+        /// </returns>
         public int GetTotal()
         {
             // Multiply item price by count of that item to get 
@@ -124,7 +170,12 @@ namespace Lab1_WOMU.Models
             return Convert.ToInt32(total ?? decimal.Zero);
         }
 
-
+        /// <summary>
+        /// creates a list of of related products
+        /// </summary>
+        /// <returns>
+        /// a list of all related products to the products in the cart
+        /// </returns>
         public List<Produkt> GetRelatedProdukts()
         {
             List<Produkt> related = new List<Produkt>();
@@ -159,7 +210,14 @@ namespace Lab1_WOMU.Models
 
             }
 
-            return related.Distinct().ToList();
+            related = related.Distinct().ToList();
+
+            foreach(var i in cart)
+            {
+                related.Remove(i.Produkt);
+            }
+
+            return related;
         }
 
 
