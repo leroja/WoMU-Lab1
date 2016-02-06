@@ -12,7 +12,7 @@ namespace Lab1_WOMU.Controllers
 {
     public class KundsController : Controller
     {
-        private DatabaseTest1 db = new DatabaseTest1();
+        private TankDatabase db = new TankDatabase();
         
         
        

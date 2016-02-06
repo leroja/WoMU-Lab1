@@ -12,13 +12,13 @@ namespace Lab1_WOMU.Controllers
 {
     public class OrderController : Controller
     {
-        private DatabaseTest1 db = new DatabaseTest1();
+        private TankDatabase db = new TankDatabase();
         
         /// <summary>
         /// 
         /// </summary>
         /// <returns>
-        /// the view
+        /// 
         /// </returns>
         // GET: Order/Create
         public ActionResult Create()
@@ -51,7 +51,7 @@ namespace Lab1_WOMU.Controllers
                     var cart = ShoppingCart.GetCart(this.HttpContext);
 
                     order.OrderRader = new List<OrderRad>();
-                    order.Total = 0;
+                    double orderTotal = 0.0;
                     foreach (var item in cart.GetCartItems())
                     {
                         var prod = db.Produkter.Where(a => a.ProduktID == item.ProduktID).Single();
@@ -67,13 +67,13 @@ namespace Lab1_WOMU.Controllers
                             };
 
                             prod.AntalILager -= item.Count;
-                            
 
-                            order.Total += orderRad.TotalPris;
+                            orderTotal += orderRad.TotalPris;
                             order.OrderRader.Add(orderRad);
                             
                         }
                     }
+                    order.Total = orderTotal * 1.25;
                     db.Order.Add(order);
                     order.OrderRader.Count();
 

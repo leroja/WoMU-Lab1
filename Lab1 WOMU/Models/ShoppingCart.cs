@@ -11,18 +11,13 @@ namespace Lab1_WOMU.Models
     public class ShoppingCart
     {
 
-        DatabaseTest1 db = new DatabaseTest1();
+        TankDatabase db = new TankDatabase();
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ShoppingCartID { get; set; }
         public const string CartSessionKey = "CartId";
         public virtual ICollection<CartItem> CartItem { get; set; }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public static ShoppingCart GetCart(HttpContextBase context)
         {
             var cart = new ShoppingCart();
@@ -56,11 +51,18 @@ namespace Lab1_WOMU.Models
                     ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
                     Count = 1,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now,
+                    totPris = Produkt.Pris
                 };
                 db.CartItem.Add(cartItem);
             }
-        
+            //else
+            //{
+            //    // If the item does exist in the cart then uppdate the quantity
+            //    cartItem.Count = cartItem.Count + 1;
+            //    cartItem.totPris = cartItem.Count * cartItem.Produkt.Pris;
+            //}
+
             db.SaveChanges();
         }
 
@@ -125,7 +127,6 @@ namespace Lab1_WOMU.Models
         /// </returns>
         public int GetCount()
         {
-            
             int? count = (from cartItems in db.CartItem
                           where cartItems.CartId == ShoppingCartID
                           select (int?)cartItems.Count).Sum();
@@ -140,18 +141,15 @@ namespace Lab1_WOMU.Models
         /// <returns>
         /// the total price of the cart
         /// </returns>
-        public int GetTotal()
+        public double GetTotal()
         {
-            // Multiply item price by count of that item to get 
-            // the current price for each of those items in the cart
-            // sum all item price totals to get the cart total
 
             decimal? total = (from cartItems in db.CartItem
                               where cartItems.CartId == ShoppingCartID
                               select (int?)cartItems.Count *
                               cartItems.Produkt.Pris).Sum();
             
-            return Convert.ToInt32(total ?? decimal.Zero);
+            return Convert.ToDouble( total ?? decimal.Zero);
         }
 
         /// <summary>
@@ -193,9 +191,10 @@ namespace Lab1_WOMU.Models
                 }
 
             }
-
+            // remove all duplicates
             related = related.Distinct().ToList();
 
+            // removes the products that are in the cart from the related products
             foreach(var i in cart)
             {
                 related.Remove(i.Produkt);

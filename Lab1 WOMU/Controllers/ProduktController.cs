@@ -13,7 +13,7 @@ namespace Lab1_WOMU.Controllers
 {
     public class ProduktController : Controller
     {
-        private DatabaseTest1 db = new DatabaseTest1();
+        private TankDatabase db = new TankDatabase();
 
         // GET: Produkt
         public ActionResult Index()

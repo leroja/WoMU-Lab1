@@ -20,7 +20,7 @@ namespace Lab1_WOMU.Models
         public int AntalILager { get; set; }
     }
 
-    public class DatabaseTest1 : DbContext
+    public class TankDatabase : DbContext
     {
         public DbSet<Produkt> Produkter { get; set; }
         public DbSet<Order> Order { get; set; }

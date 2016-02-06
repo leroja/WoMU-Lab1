@@ -11,7 +11,7 @@ namespace Lab1_WOMU.Models.ViewModels
         
         [Key]
         public List<CartItem> CartItems { get; set; }
-        public int CartTotal { get; set; }
+        public double CartTotal { get; set; }
 
         public List<Produkt> RelatedProdukts { get; set; }
     }

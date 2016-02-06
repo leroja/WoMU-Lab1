@@ -7,16 +7,16 @@ namespace Lab1_WOMU.Migrations
     using System.Linq;
     using System.Collections.Generic;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Lab1_WOMU.Models.DatabaseTest1>
+    internal sealed class Configuration : DbMigrationsConfiguration<Lab1_WOMU.Models.TankDatabase>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
             AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "Lab1_WOMU.Models.DatabaseTest1";
+            ContextKey = "Lab1_WOMU.Models.TankDatabase";
         }
 
-        protected override void Seed(Lab1_WOMU.Models.DatabaseTest1 context)
+        protected override void Seed(Lab1_WOMU.Models.TankDatabase context)
         {
             var Produkter = new List<Produkt>
             {
@@ -48,9 +48,9 @@ namespace Lab1_WOMU.Migrations
 
             var Orders = new List<Order>
             {
-                new Order { OrderDate = DateTime.Now, OrderID = 1, Total = 650000},
-                new Order { OrderDate = DateTime.Now, OrderID = 2, Total = 1850000},
-                new Order { OrderDate = DateTime.Now, OrderID = 3, Total = 4100000},
+                new Order { OrderDate = DateTime.Now, OrderID = 1, Total = 812500.0},
+                new Order { OrderDate = DateTime.Now, OrderID = 2, Total = 2312500.0},
+                new Order { OrderDate = DateTime.Now, OrderID = 3, Total = 5125000.0},
             };
             Orders.ForEach(s => context.Order.AddOrUpdate(p => p.OrderID, s));
             context.SaveChanges();
@@ -59,25 +59,25 @@ namespace Lab1_WOMU.Migrations
             {
                 new OrderRad {OrderID = Orders.Single(o => o.OrderID == 1).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M4 Sherman").ProduktID,
-                 Antal = 2},
+                 Antal = 2, TotalPris = 500000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 1).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M24 Chaffee").ProduktID,
-                 Antal = 1},
+                 Antal = 1, TotalPris = 150000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 2).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M4 Sherman").ProduktID,
-                 Antal = 5},
+                 Antal = 5, TotalPris = 1250000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 2).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "Panzerkampfwagen IV").ProduktID,
-                 Antal = 3},
+                 Antal = 3, TotalPris = 600000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 3).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M4 Sherman").ProduktID,
-                 Antal = 10},
+                 Antal = 10, TotalPris =  2500000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 3).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M4A3E2 Jumbo").ProduktID,
-                 Antal = 5},
+                 Antal = 5, TotalPris = 1250000},
                new OrderRad {OrderID = Orders.Single(o => o.OrderID == 3).OrderID,
                     ProduktID = Produkter.Single(p => p.ProduktNamn == "M26 Pershing").ProduktID,
-                 Antal = 1}
+                 Antal = 1, TotalPris = 350000}
             };
             foreach (OrderRad e in OrderRader)
             {

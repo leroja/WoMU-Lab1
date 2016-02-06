@@ -9,9 +9,10 @@ namespace Lab1_WOMU.Models.ViewModels
     class CountModelView
     {
         public string Message { get; set; }
-        public int CartTotal { get; set; }
+        public double CartTotal { get; set; }
         public int CartCount { get; set; }
         public int ItemCount { get; set; }
         public int ItemID { get; set; }
+        public int TotPris { get; set; }
     }
 }
