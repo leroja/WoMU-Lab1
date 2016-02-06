@@ -13,5 +13,6 @@ namespace Lab1_WOMU.Models.ViewModels
         public int CartCount { get; set; }
         public int ItemCount { get; set; }
         public int ItemID { get; set; }
+        public int TotPris { get; set; }
     }
 }

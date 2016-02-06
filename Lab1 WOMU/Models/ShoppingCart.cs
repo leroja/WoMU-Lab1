@@ -39,13 +39,15 @@ namespace Lab1_WOMU.Models
                     ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
                     Count = count,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now,
+                    totPris = count * Produkt.Pris
                 };
                 db.CartItem.Add(cartItem);
             }
             else
             {
                 cartItem.Count = count;
+                cartItem.totPris = count * cartItem.Produkt.Pris;
             }
             // Save changes
             db.SaveChanges();
@@ -83,7 +85,8 @@ namespace Lab1_WOMU.Models
                     ProduktID = Produkt.ProduktID,
                     CartId = ShoppingCartID,
                     Count = 1,
-                    DateCreated = DateTime.Now
+                    DateCreated = DateTime.Now,
+                    totPris = Produkt.Pris
                 };
                 db.CartItem.Add(cartItem);
             }
@@ -92,6 +95,7 @@ namespace Lab1_WOMU.Models
                 //    // If the item does exist in the cart, 
                 //    // then uppdate the quantity
                 cartItem.Count = cartItem.Count + 1;
+                cartItem.totPris = cartItem.Count * cartItem.Produkt.Pris;
             }
         // Save changes
         db.SaveChanges();

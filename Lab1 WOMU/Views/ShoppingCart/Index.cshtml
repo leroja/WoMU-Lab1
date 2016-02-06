@@ -20,7 +20,9 @@
                             $('#row-' + data.DeleteId).fadeOut('slow');
                         } else {
                             $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            
                         }
+                        $('#item-pris-'+data.ItemID).text(data.totPris);
                         $('#cart-total').text(data.CartTotal);
                         $('#update-message').text(data.Message);
                         $('#cart-status').text(data.CartCount);
@@ -45,7 +47,9 @@
                             $('#row-' + data.ItemID).fadeOut('slow');
                         } else {
                             $('#item-count-' + data.ItemID).text(data.ItemCount);
+                            $('#item-pris-'+data.ItemID).text(data.TotPris);
                         }
+                       
                         $('#cart-total').text(data.CartTotal);
                         $('#update-message').text(data.Message);
                         $('#cart-status').text(data.CartCount);
@@ -66,10 +70,12 @@
                     function (data) {
                         // Successful requests get here
                         // Update the page elements
+                        
                         $('#item-count-'+data.ItemID).text(data.ItemCount);
                         $('#cart-total').text(data.CartTotal);
                         $('#update-message').text(data.Message);
                         $('#cart-status').text(data.CartCount);
+                        $('#item-pris-'+data.ItemID).text(data.TotPris);
                     });
             }
         });
@@ -103,8 +109,18 @@
                             <th>
                                 Antal
                             </th>
-                            <th></th>
-                            <th></th>
+                            <th>
+                                Total Pris
+                            </th>
+                            <th>
+                                Ändra Antal
+                            </th>
+                            <th>
+                                Ta Bort Vara
+                            </th>
+                            <th>
+                                Total pris på varukorg
+                            </th>
                         </tr>
                     </thead>
                     @foreach (var item in Model.CartItems)
@@ -119,6 +135,9 @@
                             <td id="item-count-@item.ProduktID">
                                 @item.Count
                             </td>
+                            <td id="item-pris-@item.ProduktID">
+                             @item.totPris
+                            </td>
                             <td>
                                 <a href="#" class="CountP"
                                    data-id="@item.CartItemID">
@@ -129,6 +148,7 @@
                                     -
                                 </a>
                             </td>
+                           
                             <td>
                                 <a href="#" class="RemoveLink"
                                    data-id="@item.ProduktID">
@@ -142,6 +162,8 @@
                         <td>
                             Total
                         </td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

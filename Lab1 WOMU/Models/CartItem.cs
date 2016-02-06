@@ -12,6 +12,7 @@ namespace Lab1_WOMU.Models
         public string CartId { get; set; }
         public int ProduktID { get; set; }
         public int Count { get; set; }
+        public int totPris { get; set; }
         public System.DateTime DateCreated { get; set; }
         public virtual Produkt Produkt { get; set; }
     }

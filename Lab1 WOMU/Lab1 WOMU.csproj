@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201602031416467_AddCartItem.Designer.cs">
       <DependentUpon>201602031416467_AddCartItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602051301470_addtotpris.cs" />
+    <Compile Include="Migrations\201602051301470_addtotpris.Designer.cs">
+      <DependentUpon>201602051301470_addtotpris.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Kund.cs" />
@@ -288,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602031416467_AddCartItem.resx">
       <DependentUpon>201602031416467_AddCartItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602051301470_addtotpris.resx">
+      <DependentUpon>201602051301470_addtotpris.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

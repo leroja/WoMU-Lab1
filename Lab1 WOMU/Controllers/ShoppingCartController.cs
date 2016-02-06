@@ -49,7 +49,9 @@ namespace Lab1_WOMU.Controllers
                 CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
                 ItemCount = count,
-                DeleteId = id
+                DeleteId = id,
+                totPris = addedItem.Pris * count
+                
             };
             return Json(results);
         }
@@ -63,8 +65,8 @@ namespace Lab1_WOMU.Controllers
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             // Get the name of the Produkt to display confirmation
-            string itemName = db.Produkter
-                .Single(item => item.ProduktID == id).ProduktNamn;
+            var itemName = db.Produkter
+                .Single(item => item.ProduktID == id);
 
             // Remove from cart
             int itemCount = cart.RemoveFromCart(id);
@@ -72,12 +74,13 @@ namespace Lab1_WOMU.Controllers
             // Display the confirmation message
             var results = new SCremoveVM
             {
-                Message = "One (1) " + Server.HtmlEncode(itemName) +
+                Message = "One (1) " + Server.HtmlEncode(itemName.ProduktBeskrivning) +
                     " has been removed from your shopping cart.",
                 CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
                 ItemCount = itemCount,
                 DeleteId = id
+                
             };
             return Json(results);
         }
@@ -105,16 +108,19 @@ namespace Lab1_WOMU.Controllers
             }
             return View(produkt);
         }
+        /// <summary>
+        /// adds One CartItem to existing Cartitem in cart. then calkylates new values
+        /// </summary>
+        /// <param name="id"></param> ID of CartItem in Cart
+        /// <returns></returns> return New values for values in CartItem
         [HttpPost]
         public ActionResult CountP(int id)
         {
             var Temp = db.CartItem.Single(
                Temp1 => Temp1.CartItemID == id);
 
-            var Temp2 = db.CartItem.Single(
-               Temp1 => Temp1.CartItemID == id);
-
             Temp.Count = Temp.Count + 1;
+            Temp.totPris = Temp.Produkt.Pris * Temp.Count;
             db.SaveChanges();
 
             var cart = ShoppingCart.GetCart(this.HttpContext);
@@ -124,9 +130,12 @@ namespace Lab1_WOMU.Controllers
                 {
                     Message = Temp.Produkt.ProduktNamn + " has been change to " + Temp.Count + " st.",
                     ItemCount = Temp.Count,
+                    TotPris = Temp.totPris,
                     CartTotal = cart.GetTotal(),
                     CartCount = cart.GetCount(),
                     ItemID = Temp.ProduktID
+                    
+                    
                 };
                 db.SaveChanges();
                 return Json(results);
@@ -134,31 +143,38 @@ namespace Lab1_WOMU.Controllers
             else
             {
                 Temp.Count = Temp.Count - 1;
+                Temp.totPris = Temp.Produkt.Pris * Temp.Count;
                 db.SaveChanges();
                 var results = new CountModelView
                 {
                     Message = "Inga mer Produkter i Lager.",
-                    ItemCount = Temp2.Count,
+                    ItemCount = Temp.Count,
+                    TotPris = Temp.totPris,
                     CartTotal = cart.GetTotal(),
                     CartCount = cart.GetCount(),
-                    ItemID = Temp2.ProduktID
+                    ItemID = Temp.ProduktID
+                  
+                    
                 };
-                
+                db.SaveChanges();
                 return Json(results);
             }
 
 
         }
+        /// <summary>
+        /// removes One CartItem to existing Cartitem in cart. then calkylates new values
+        /// </summary>
+        /// <param name="id"></param> ID of CartItem in Cart
+        /// <returns></returns> return New values for values in CartItem
         public ActionResult CountM(int id)
         {
             {
                 var Temp = db.CartItem.Single(
                 Temp1 => Temp1.CartItemID == id);
 
-                var Temp2 = db.CartItem.Single(
-                   Temp1 => Temp1.CartItemID == id);
-
                 Temp.Count = Temp.Count - 1;
+                Temp.totPris = Temp.Produkt.Pris * Temp.Count;
                 db.SaveChanges();
 
                 // Remove the item from the cart
@@ -173,30 +189,37 @@ namespace Lab1_WOMU.Controllers
                         ItemCount = Temp.Count,
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
-                        ItemID = Temp.ProduktID
+                        ItemID = Temp.ProduktID,
+                        TotPris = getCartItemTotalPris(Temp)
                     };
                     db.SaveChanges();
                     return Json(results);
                 }
                 else
                 {
-                    Temp.Count = Temp.Count = 0;
+                    Temp.Count = Temp.Count + 1;
+                    Temp.totPris = Temp.Produkt.Pris * Temp.Count;
                     db.SaveChanges();
-                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID); 
+                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID);
                     var results = new CountModelView
                     {
                         Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn."),
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
-                        ItemID = Temp.ProduktID
+                        ItemID = Temp.ProduktID,
+                        TotPris = Temp.totPris
                     };
+                    db.SaveChanges();
                     return Json(results);
 
                 }
-
             }
-
-
+        }
+        public int getCartItemTotalPris(CartItem item)
+        {
+            var pris = item.Count * item.Produkt.Pris;
+            
+            return (pris);
         }
     }
 }
