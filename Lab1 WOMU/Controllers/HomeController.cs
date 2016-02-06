@@ -13,18 +13,6 @@ namespace Lab1_WOMU.Controllers
         // GET: Home
         public ActionResult Index()
         {
-
-
-            //var order = from m in db.Order
-            //             select m;
-
-            //int temp;
-            //if (!String.IsNullOrEmpty(ID) && int.TryParse(ID,out temp))
-            //{
-            //    order = order.Where(s => s.OrderID.Equals(ID));
-            //}
-
-            //return View(order);
             return View();
         }
 
@@ -38,19 +26,5 @@ namespace Lab1_WOMU.Controllers
         {
             return View();
         }
-
-
-        //public ActionResult OrderKoll(string id)
-        //{
-        //    //var order = from m in db.Movies select m;
-
-        //    //if (!String.IsNullOrEmpty(id))
-        //    //{
-        //    //    order = order.Where(s => s.Title.Contains(searchString));
-        //    //}
-
-        //    //return View(order);
-        //    return View();
-        //}
     }
 }

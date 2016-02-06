@@ -13,34 +13,28 @@ namespace Lab1_WOMU.Controllers
     public class OrderController : Controller
     {
         private DatabaseTest1 db = new DatabaseTest1();
-
-        // GET: Order
-        public ActionResult Index()
-        {
-            return View(db.Order.ToList());
-        }
-
-        // GET: Order/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = db.Order.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// the view
+        /// </returns>
         // GET: Order/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// takes in an unfinished order and finish it, and hen saves it to the database and clears the cart. 
+        /// </summary>
+        /// <param name="order">
+        /// the order that is going to be created
+        /// </param>
+        /// <returns>
+        /// redirect to Order completion page
+        /// </returns>
         // POST: Order/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -74,8 +68,8 @@ namespace Lab1_WOMU.Controllers
                             };
 
                             prod.AntalILager -= item.Count;
+                            
 
-                            // Set the order total of the shopping cart
                             order.Total += orderRad.TotalPris;
                             order.OrderRader.Add(orderRad);
                             
@@ -85,6 +79,7 @@ namespace Lab1_WOMU.Controllers
                     order.OrderRader.Count();
 
                     db.SaveChanges();
+                    cart.EmptyCart();
                     return RedirectToAction("Completed", "Order", new { id = order.OrderID });
                 }
             }
@@ -92,69 +87,72 @@ namespace Lab1_WOMU.Controllers
             return View(order);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// Id of the completed order
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public ActionResult Completed(int? id)
         {
             ViewBag.Id = id;
             return View();
         }
+        
+        /// <summary>
+        /// finds all the orderLines that belong the order if the serchstring is valid
+        /// else it return no orderLines
+        /// </summary>
+        /// <param name="SearchString">
+        /// user search input
+        /// </param>
+        /// <returns>
+        /// returns all orderRader that belongs to the sought after order
+        /// or none if the searchstring is empty or not an order
+        /// </returns>
+        public ActionResult OrderKoll(string SearchString)
+        {
+            var order = db.OrderRad.Include(c => c.Produkt);
 
-        // GET: Order/Edit/5
-        public ActionResult Edit(int? id)
+            int temp = 0;
+
+            if ((!String.IsNullOrEmpty(SearchString)) && int.TryParse(SearchString, out temp))
+            {
+                order = order.Where(s => s.Order.OrderID.Equals(temp));
+            }
+            else {
+                order = order.Where(s => s.Order.OrderID.Equals(0));
+            }
+            return View(order.ToList());
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public ActionResult OrderItemDetail(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Order.Find(id);
-            if (order == null)
+            Produkt produkt = db.Produkter.Find(id);
+            if (produkt == null)
             {
                 return HttpNotFound();
             }
-            return View(order);
+            return View(produkt);
         }
 
-        // POST: Order/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderID,OrderDate,Total")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(order);
-        }
-
-        // GET: Order/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = db.Order.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Order/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Order order = db.Order.Find(id);
-            db.Order.Remove(order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

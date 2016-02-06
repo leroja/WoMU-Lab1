@@ -15,7 +15,6 @@ namespace Lab1_WOMU.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ShoppingCartID { get; set; }
         public const string CartSessionKey = "CartId";
-
         public virtual ICollection<CartItem> CartItem { get; set; }
 
 
@@ -70,16 +69,24 @@ namespace Lab1_WOMU.Models
             return GetCart(controller.HttpContext);
         }
 
+
+        /// <summary>
+        /// adds the specified product to the cart
+        /// </summary>
+        /// <param name="Produkt">
+        /// id of the product 
+        /// </param>
+        /// <returns>
+        /// the number of the product in the cartItem
+        /// </returns>
         public int AddToCart(Produkt Produkt)
         {
-            // Get the matching cart and item instances
             var cartItem = db.CartItem.SingleOrDefault(
                 c => c.CartId == ShoppingCartID
                 && c.ProduktID == Produkt.ProduktID);
 
-            if (cartItem == null)
+            if (cartItem == null) // if no cartItem exists, create a new one
             {
-                // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
                     ProduktID = Produkt.ProduktID,
@@ -92,22 +99,28 @@ namespace Lab1_WOMU.Models
             }
             else
             {
-                //    // If the item does exist in the cart, 
-                //    // then uppdate the quantity
+                // If the item does exist in the cart then uppdate the quantity
                 cartItem.Count = cartItem.Count + 1;
                 cartItem.totPris = cartItem.Count * cartItem.Produkt.Pris;
             }
-        // Save changes
+        
         db.SaveChanges();
 
             return cartItem.Count;
         }
 
+
+        /// <summary>
+        /// removes the specified product from the cart
+        /// </summary>
+        /// <param name="id">
+        /// id of the product 
+        /// </param>
+        /// <returns>
+        /// 0
+        /// </returns>
         public int RemoveFromCart(int id)
         {
-
-
-            // Get the cart
 
             var cartItem = db.CartItem.Single(
                 cart => cart.CartId == ShoppingCartID
@@ -119,12 +132,15 @@ namespace Lab1_WOMU.Models
             if (cartItem != null)
             {
                 db.CartItem.Remove(cartItem);
-                //Save changes
+
                 db.SaveChanges();
             }
             return itemCount;
         }
 
+        /// <summary>
+        /// Empties the cart
+        /// </summary>
         public void EmptyCart()
         {
             var cartItems = db.CartItem.Where(
@@ -134,26 +150,47 @@ namespace Lab1_WOMU.Models
             {
                 db.CartItem.Remove(cartItem);
             }
-            // Save changes
+    
             db.SaveChanges();
         }
 
+
+        /// <summary>
+        /// return a list of all cartItems that belong to the cart
+        /// </summary>
+        /// <returns>
+        /// a list of cartItems
+        /// </returns>
         public List<CartItem> GetCartItems()
         {
             return db.CartItem.Where(
                 cart => cart.CartId == ShoppingCartID).ToList();
         }
 
+        /// <summary>
+        /// this function gets the count of all item and sums them
+        /// </summary>
+        /// <returns>
+        /// the sum of all items in the cart
+        /// 0 if all entries are null
+        /// </returns>
         public int GetCount()
         {
-            // Get the count of each item in the cart and sum them up
+            
             int? count = (from cartItems in db.CartItem
                           where cartItems.CartId == ShoppingCartID
                           select (int?)cartItems.Count).Sum();
-            // Return 0 if all entries are null
+
             return count ?? 0;
         }
 
+
+        /// <summary>
+        /// sums up the total price of the cart
+        /// </summary>
+        /// <returns>
+        /// the total price of the cart
+        /// </returns>
         public int GetTotal()
         {
             // Multiply item price by count of that item to get 
@@ -165,49 +202,61 @@ namespace Lab1_WOMU.Models
                               select (int?)cartItems.Count *
                               cartItems.Produkt.Pris).Sum();
             
-            return Convert.ToInt32( total ?? decimal.Zero);
+            return Convert.ToInt32(total ?? decimal.Zero);
         }
 
-        public Order CreateOrder(Order order)
+        /// <summary>
+        /// creates a list of of related products
+        /// </summary>
+        /// <returns>
+        /// a list of all related products to the products in the cart
+        /// </returns>
+        public List<Produkt> GetRelatedProdukts()
         {
-            int orderTotal = 0;
-            order.OrderRader = new List<OrderRad>();
+            List<Produkt> related = new List<Produkt>();
 
-            var cartItems = GetCartItems();
-            // Iterate over the items in the cart, 
-            // adding the order details for each
-            foreach (var item in cartItems)
+            var cart = GetCartItems();
+
+            List<int> orderIDs = new List<int>();
+
+            foreach (var cartItem in cart)
             {
+                var temp = db.OrderRad.Where(o => o.ProduktID == cartItem.ProduktID);
 
-                if (item.Count < item.Produkt.AntalILager)
-                {
-                    var orderDetail = new OrderRad
-                    {
+                var temp2 = temp.ToList();
 
-                        ProduktID = item.ProduktID,
-                        OrderID = order.OrderID,
-                        TotalPris = item.Produkt.Pris * item.Count,
-                        Antal = item.Count
-                    };
-
-                    // Set the order total of the shopping cart
-                    orderTotal += orderDetail.TotalPris;
-                    order.OrderRader.Add(orderDetail);
-                    db.OrderRad.Add(orderDetail);
-                }
+                foreach(var t in temp2)
+        {
+                    orderIDs.Add(t.OrderID);
+                }    
             }
-            // Set the order's total to the orderTotal count
-            order.Total = orderTotal;
 
-            // Save the order
-            db.SaveChanges();
-            // Empty the shopping cart
-            EmptyCart();
+            foreach(var ord in orderIDs)
+            {
+                var order = db.Order.Where(m => m.OrderID == ord);
 
-            return order;
-        }
+                foreach(var o in order)
+                {
+                    foreach(var rad in o.OrderRader)
+                    {
+                        related.Add(rad.Produkt);
+                    }
+                }
 
-        // We're using HttpContextBase to allow access to cookies.
+            }
+
+            related = related.Distinct().ToList();
+
+            foreach(var i in cart)
+            {
+                related.Remove(i.Produkt);
+                }
+
+            return related;
+            }
+
+
+
         public string GetCartId(HttpContextBase context)
         {
             if (context.Session[CartSessionKey] == null)
@@ -219,9 +268,9 @@ namespace Lab1_WOMU.Models
                 }
                 else
                 {
-                    // Generate a new random GUID using System.Guid class
+                    
                     Guid tempCartId = Guid.NewGuid();
-                    // Send tempCartId back to client as a cookie
+
                     context.Session[CartSessionKey] = tempCartId.ToString();
                 }
             }

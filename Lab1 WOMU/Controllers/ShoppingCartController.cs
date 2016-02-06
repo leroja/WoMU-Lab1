@@ -12,31 +12,74 @@ namespace Lab1_WOMU.Controllers
     public class ShoppingCartController : Controller
     {
         private DatabaseTest1 db = new DatabaseTest1();
-        //
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         // GET: /ShoppingCart/
         public ActionResult Index()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            // Set up our ViewModel
             var viewModel = new ShoppingCartVM
             {
                 CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
+                CartTotal = cart.GetTotal(),
+                RelatedProdukts = cart.GetRelatedProdukts()
             };
-            // Return the view
+
             return View(viewModel);
         }
-        //
-        // GET: /Store/AddToCart/5
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        // GET: Produkt/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Produkt produkt = db.Produkter.Find(id);
+            if (produkt == null)
+            {
+                return HttpNotFound();
+            }
+            return View(produkt);
+        }
+
+
+
+        /// <summary>
+        /// adds a product to the cart
+        /// </summary>
+        /// <param name="id">
+        /// id of product that is going to be added to the cart
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        // GET: /AddToCart/5
         [HttpPost]
         public ActionResult AddToCart(int id)
         {
-            // Retrieve the item from the database
+
             var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
 
-            // Add it to the shopping cart
+            
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             int count = cart.AddToCart(addedItem);
@@ -55,20 +98,29 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-        //
+
+        /// <summary>
+        /// removes a specified product
+        /// </summary>
+        /// <param name="id">
+        /// id of product to be removed
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]
         public ActionResult RemoveFromCart(int id)
         {
             
-            // Remove the item from the cart
+            
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             // Get the name of the Produkt to display confirmation
             var itemName = db.Produkter
                 .Single(item => item.ProduktID == id);
 
-            // Remove from cart
+            
             int itemCount = cart.RemoveFromCart(id);
 
             // Display the confirmation message
@@ -84,16 +136,7 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-        //
-        // GET: /ShoppingCart/CartSummary
-        [ChildActionOnly]
-        public ActionResult CartSummary()
-        {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            ViewData["CartCount"] = cart.GetCount();
-            return PartialView("CartSummary");
-        }
 
         public ActionResult Details(int? id)
         {
@@ -177,7 +220,7 @@ namespace Lab1_WOMU.Controllers
                 Temp.totPris = Temp.Produkt.Pris * Temp.Count;
                 db.SaveChanges();
 
-                // Remove the item from the cart
+                
                 var cart = ShoppingCart.GetCart(this.HttpContext);
 
                 if (Temp.Count > 0)
@@ -200,7 +243,7 @@ namespace Lab1_WOMU.Controllers
                     Temp.Count = Temp.Count + 1;
                     Temp.totPris = Temp.Produkt.Pris * Temp.Count;
                     db.SaveChanges();
-                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID);
+                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID); 
                     var results = new CountModelView
                     {
                         Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn."),
@@ -211,10 +254,9 @@ namespace Lab1_WOMU.Controllers
                     };
                     db.SaveChanges();
                     return Json(results);
-
                 }
             }
-        }
+            }
         public int getCartItemTotalPris(CartItem item)
         {
             var pris = item.Count * item.Produkt.Pris;

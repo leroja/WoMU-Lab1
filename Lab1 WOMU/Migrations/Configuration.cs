@@ -48,9 +48,9 @@ namespace Lab1_WOMU.Migrations
 
             var Orders = new List<Order>
             {
-                new Order { OrderDate = DateTime.Now},
-                new Order { OrderDate = DateTime.Now},
-                new Order { OrderDate = DateTime.Now},
+                new Order { OrderDate = DateTime.Now, OrderID = 1, Total = 650000},
+                new Order { OrderDate = DateTime.Now, OrderID = 2, Total = 1850000},
+                new Order { OrderDate = DateTime.Now, OrderID = 3, Total = 4100000},
             };
             Orders.ForEach(s => context.Order.AddOrUpdate(p => p.OrderID, s));
             context.SaveChanges();

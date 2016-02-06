@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Köp Sida";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -17,6 +16,7 @@
                 $.post("/ShoppingCart/AddToCart", { "id": recordToAdd },
                     function (data) {
                         $('#cart-status').text(data.CartCount);
+                        $('#update-message').text(data.Message);
                     });
             }
         });
@@ -27,6 +27,8 @@
 <div>
     <h4>Produkt</h4>
     <hr />
+    <div id="update-message">
+    </div>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.ProduktNamn)
@@ -50,7 +52,6 @@
 </div>
 
 
-<form></form>
 <a href="#" class="AddLink"
    data-id="@Model.ProduktID" data-toggle="modal" data-target="#myModal" >
     Lägg till i varukorg
