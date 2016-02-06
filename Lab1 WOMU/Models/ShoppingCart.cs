@@ -43,10 +43,7 @@ namespace Lab1_WOMU.Models
         /// <param name="Produkt">
         /// id of the product 
         /// </param>
-        /// <returns>
-        /// the number of the product in the cartItem
-        /// </returns>
-        public int AddToCart(Produkt Produkt)
+        public void AddToCart(Produkt Produkt)
         {
             var cartItem = db.CartItem.SingleOrDefault(
                 c => c.CartId == ShoppingCartID
@@ -63,15 +60,8 @@ namespace Lab1_WOMU.Models
                 };
                 db.CartItem.Add(cartItem);
             }
-            else
-            {
-                // If the item does exist in the cart then uppdate the quantity
-                cartItem.Count = cartItem.Count + 1;
-            }
         
-        db.SaveChanges();
-
-            return cartItem.Count;
+            db.SaveChanges();
         }
 
 
@@ -81,10 +71,7 @@ namespace Lab1_WOMU.Models
         /// <param name="id">
         /// id of the product 
         /// </param>
-        /// <returns>
-        /// 0
-        /// </returns>
-        public int RemoveFromCart(int id)
+        public void RemoveFromCart(int id)
         {
 
             var cartItem = db.CartItem.Single(
@@ -92,15 +79,12 @@ namespace Lab1_WOMU.Models
                 && cart.ProduktID == id);
 
 
-            int itemCount = 0;
-
             if (cartItem != null)
             {
                 db.CartItem.Remove(cartItem);
 
                 db.SaveChanges();
             }
-            return itemCount;
         }
 
         /// <summary>

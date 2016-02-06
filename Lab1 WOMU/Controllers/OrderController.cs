@@ -60,7 +60,6 @@ namespace Lab1_WOMU.Controllers
                         {
                             var orderRad = new OrderRad
                             {
-
                                 ProduktID = item.ProduktID,
                                 OrderID = order.OrderID,
                                 TotalPris = item.Produkt.Pris * item.Count,
@@ -80,7 +79,7 @@ namespace Lab1_WOMU.Controllers
 
                     db.SaveChanges();
                     cart.EmptyCart();
-                    return RedirectToAction("Completed", "Order", new { id = order.OrderID });
+                    return RedirectToAction("Completed", "Order", new { id = order.OrderID});
                 }
             }
 

@@ -79,19 +79,18 @@ namespace Lab1_WOMU.Controllers
             var addedItem = db.Produkter
                 .Single(item => item.ProduktID == id);
 
-            
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            int count = cart.AddToCart(addedItem);
+            cart.AddToCart(addedItem);
 
             // Display the confirmation message
             var results = new SCremoveVM
             {
                 Message = Server.HtmlEncode(addedItem.ProduktNamn) +
-                    " has been added to your shopping cart.",
+                    " har lagts till i din varukorg",
                 CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
-                ItemCount = count,
+                ItemCount = 0,
                 DeleteId = id
             };
             return Json(results);
@@ -119,16 +118,16 @@ namespace Lab1_WOMU.Controllers
                 .Single(item => item.ProduktID == id).ProduktNamn;
 
             
-            int itemCount = cart.RemoveFromCart(id);
+            cart.RemoveFromCart(id);
 
             // Display the confirmation message
             var results = new SCremoveVM
             {
-                Message = "One (1) " + Server.HtmlEncode(itemName) +
-                    " has been removed from your shopping cart.",
+                Message = Server.HtmlEncode(itemName) +
+                    " har tagits bort from varukorgen.",
                 CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
-                ItemCount = itemCount,
+                ItemCount = 0,
                 DeleteId = id
             };
             return Json(results);
@@ -159,7 +158,7 @@ namespace Lab1_WOMU.Controllers
             {
                 var results = new CountModelView
                 {
-                    Message = Temp.Produkt.ProduktNamn + " has been change to " + Temp.Count + " st.",
+                    Message = Temp.Produkt.ProduktNamn + " har ändrats till " + Temp.Count + " stcken.",
                     ItemCount = Temp.Count,
                     CartTotal = cart.GetTotal(),
                     CartCount = cart.GetCount(),
@@ -213,7 +212,7 @@ namespace Lab1_WOMU.Controllers
                     // Display the confirmation message
                     var results = new CountModelView
                     {
-                        Message = ("en " + Temp.Produkt.ProduktNamn + " har tagits bort från din kundkorg."),
+                        Message = ("en " + Temp.Produkt.ProduktNamn + " har tagits bort från din varukorg."),
                         ItemCount = Temp.Count,
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
@@ -226,10 +225,10 @@ namespace Lab1_WOMU.Controllers
                 {
                     Temp.Count = Temp.Count = 0;
                     db.SaveChanges();
-                    var ItemCount = cart.RemoveFromCart(Temp.ProduktID); 
+                    cart.RemoveFromCart(Temp.ProduktID); 
                     var results = new CountModelView
                     {
-                        Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din kundvagn."),
+                        Message = (Temp.Produkt.ProduktNamn + " har tagits bort från din varukorg."),
                         CartTotal = cart.GetTotal(),
                         CartCount = cart.GetCount(),
                         ItemID = Temp.ProduktID

@@ -15,7 +15,6 @@
                 // Perform the ajax post
                 $.post("/ShoppingCart/AddToCart", { "id": recordToAdd },
                     function (data) {
-                        $('#cart-status').text(data.CartCount);
                         $('#update-message').text(data.Message);
                     });
             }
