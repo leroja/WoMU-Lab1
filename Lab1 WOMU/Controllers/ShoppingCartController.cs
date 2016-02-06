@@ -136,21 +136,6 @@ namespace Lab1_WOMU.Controllers
             };
             return Json(results);
         }
-
-
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Produkt produkt = db.Produkter.Find(id);
-            if (produkt == null)
-            {
-                return HttpNotFound();
-            }
-            return View(produkt);
-        }
         /// <summary>
         /// adds One CartItem to existing Cartitem in cart. then calkylates new values
         /// </summary>
