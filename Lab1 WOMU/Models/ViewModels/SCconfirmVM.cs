@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Lab1_WOMU.Models.ViewModels
 {
-    public class SCremoveVM
+    public class SCconfirmVM
     {
         public string Message { get; set; }
         public double CartTotal { get; set; }

@@ -42,46 +42,51 @@ namespace Lab1_WOMU.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Order order)
         {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            if (cart.GetCartItems().Count() == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                order.OrderDate = DateTime.Now;
+
+                //var cart = ShoppingCart.GetCart(this.HttpContext);
+
+                order.OrderRader = new List<OrderRad>();
+                double orderTotal = 0.0;
+                foreach (var item in cart.GetCartItems())
                 {
-                    order.OrderDate = DateTime.Now;
+                    var prod = db.Produkter.Where(a => a.ProduktID == item.ProduktID).Single();
 
-                    var cart = ShoppingCart.GetCart(this.HttpContext);
-
-                    order.OrderRader = new List<OrderRad>();
-                    double orderTotal = 0.0;
-                    foreach (var item in cart.GetCartItems())
+                    if (item.Count < prod.AntalILager)
                     {
-                        var prod = db.Produkter.Where(a => a.ProduktID == item.ProduktID).Single();
-
-                        if (item.Count < prod.AntalILager)
+                        var orderRad = new OrderRad
                         {
-                            var orderRad = new OrderRad
-                            {
-                                ProduktID = item.ProduktID,
-                                OrderID = order.OrderID,
-                                TotalPris = item.Produkt.Pris * item.Count,
-                                Antal = item.Count
-                            };
+                            ProduktID = item.ProduktID,
+                            OrderID = order.OrderID,
+                            TotalPris = item.Produkt.Pris * item.Count,
+                            Antal = item.Count
+                        };
 
-                            prod.AntalILager -= item.Count;
+                        prod.AntalILager -= item.Count;
 
-                            orderTotal += orderRad.TotalPris;
-                            order.OrderRader.Add(orderRad);
+                        orderTotal += orderRad.TotalPris;
+                        order.OrderRader.Add(orderRad);
                             
-                        }
                     }
-                    order.Total = orderTotal * 1.25;
-                    db.Order.Add(order);
-                    order.OrderRader.Count();
-
-                    db.SaveChanges();
-                    cart.EmptyCart();
-                    return RedirectToAction("Completed", "Order", new { id = order.OrderID});
                 }
+                order.Total = orderTotal * 1.25;
+                db.Order.Add(order);
+                order.OrderRader.Count();
+
+                db.SaveChanges();
+                cart.EmptyCart();
+                return RedirectToAction("Completed", "Order", new { id = order.OrderID});
             }
+            
 
             return View(order);
         }

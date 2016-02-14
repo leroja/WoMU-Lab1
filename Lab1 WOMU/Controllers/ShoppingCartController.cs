@@ -84,7 +84,7 @@ namespace Lab1_WOMU.Controllers
             cart.AddToCart(addedItem);
 
             // Display the confirmation message
-            var results = new SCremoveVM
+            var results = new SCconfirmVM
             {
                 Message = Server.HtmlEncode(addedItem.ProduktNamn) +
                     " har lagts till i din varukorg",
@@ -124,10 +124,10 @@ namespace Lab1_WOMU.Controllers
             cart.RemoveFromCart(id);
 
             // Display the confirmation message
-            var results = new SCremoveVM
+            var results = new SCconfirmVM
             {
-                Message = Server.HtmlEncode(itemName.ProduktNamn) +
-                    " har tagits bort from varukorgen.",
+                Message = "Alla " + Server.HtmlEncode(itemName.ProduktNamn) +
+                    "'s har tagits bort from varukorgen.",
                 CartTotal = cart.GetTotal() * 1.25,
                 CartCount = cart.GetCount(),
                 ItemCount = 0,
@@ -137,10 +137,14 @@ namespace Lab1_WOMU.Controllers
             return Json(results);
         }
         /// <summary>
-        /// adds One CartItem to existing Cartitem in cart. then calkylates new values
+        /// adds One CartItem to existing Cartitem in cart. then calculates new values
         /// </summary>
-        /// <param name="id"></param> ID of CartItem in Cart
-        /// <returns></returns> return New values for values in CartItem
+        /// <param name="id">
+        ///  ID of CartItem in Cart
+        /// </param>
+        /// <returns>
+        /// return New values for values in CartItem
+        /// </returns>
         [HttpPost]
         public ActionResult CountP(int id)
         {
@@ -191,10 +195,14 @@ namespace Lab1_WOMU.Controllers
 
         }
         /// <summary>
-        /// removes One CartItem to existing Cartitem in cart. then calkylates new values
+        /// removes One CartItem to existing Cartitem in cart. then calculates new values
         /// </summary>
-        /// <param name="id"></param> ID of CartItem in Cart
-        /// <returns></returns> return New values for values in CartItem
+        /// <param name="id"> 
+        /// ID of CartItem in Cart
+        /// </param>
+        /// <returns>
+        /// return New values for values in CartItem
+        /// </returns> 
         public ActionResult CountM(int id)
         {
             {

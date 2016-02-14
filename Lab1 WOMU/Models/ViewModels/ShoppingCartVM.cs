@@ -9,7 +9,6 @@ namespace Lab1_WOMU.Models.ViewModels
     public class ShoppingCartVM
     {
         
-        [Key]
         public List<CartItem> CartItems { get; set; }
         public double CartTotal { get; set; }
 
